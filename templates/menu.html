@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bar Sinabril</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            padding: 30px 20px;
+            margin-bottom: 25px;
+            font-size: 2.2rem;
+        }
+        .image-wrapper {
+            position: relative;
+            min-height: 350px;
+            width: 100%;
+            background: #ecf0f1;
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .image-wrapper img {
+            max-width: 100%;
+            max-height: 70vh;
+            display: block;
+            border-radius: 8px;
+            box-shadow: 0 1px 5px rgba(0,0,0,0.2);
+            object-fit: contain;
+        }
+        .controls {
+            padding: 20px;
+            background: #f8f9fa;
+            border-top: 1px solid #eee;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        button {
+            padding: 10px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.2s;
+        }
+        .btn-upload {
+            background: #3498db;
+            color: white;
+        }
+        .btn-upload:hover {
+            background: #2980b9;
+        }
+        .btn-download {
+            background: #27ae60;
+            color: white;
+        }
+        .btn-download:hover {
+            background: #219653;
+        }
+        .info {
+            padding: 15px 20px;
+            text-align: center;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        /* Responsive improvements */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.8rem;
+                padding: 20px 15px;
+            }
+            .controls {
+                flex-direction: column;
+            }
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Bar Sinabril</h1>
+
+        <div class="image-wrapper">
+            <img class="embedded-image" alt="Menu Card"
+                 src="data:image/{{ image_format | default('jpeg') }};base64,{{ image_base64 }}">
+        </div>
+
+        <div class="controls">
+            <button class="btn-upload" onclick="uploadImage()">Upload New Menu Image</button>
+            <button class="btn-download" onclick="downloadImage()">Download Image</button>
+        </div>
+
+        <div class="info">
+            <p>Current menu item: <strong>{{ image_title | default('Carta del Bar') }}</strong></p>
+        </div>
+    </div>
+
+    <script>
+        async function uploadImage() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+            input.onchange = async (e) => {
+                const file = e.target.files[0];
+                if (!file) return alert('Please select an image file');
+
+                const reader = new FileReader();
+                reader.onload = function(ev) {
+                    fetch('/api/v1/parse-menu', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ image_b64: ev.target.result })
+                    })
+                    .then(r => r.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            window.location.href = `/menu/${data.image_id}`;
+                        } else {
+                            alert('Upload failed: ' + JSON.stringify(data));
+                        }
+                    })
+                    .catch(error => {
+                        alert('Error uploading image: ' + error.message);
+                    });
+                };
+                reader.onerror = () => alert('Error reading file');
+                reader.readAsDataURL(file);
+            };
+            input.click();
+        }
+
+        async function downloadImage() {
+            const imageId = window.location.pathname.split('/').pop();
+            try {
+                // Fetch the menu page to extract the embedded image
+                const response = await fetch(`/menu/${imageId}`);
+                if (!response.ok) throw new Error('Image not found');
+
+                const html = await response.text();
+                // Extract base64 data from the data-URI in the img tag
+                const match = html.match(/src="data:image\/[^;]+;base64,([^"]+)"/);
+                if (!match) throw new Error('Image data not found');
+
+                const base64Data = match[1];
+                // Determine the MIME type
+                const typeMatch = html.match(/data:image\/([^;]+);base64/);
+                const mimeType = typeMatch ? `image/${typeMatch[1]}` : 'image/jpeg';
+
+                const byteChars = atob(base64Data);
+                const byteNumbers = new Array(byteChars.length);
+                for (let i = 0; i < byteChars.length; i++) {
+                    byteNumbers[i] = byteChars.charCodeAt(i);
+                }
+                const byteArray = new Uint8Array(byteNumbers);
+                const blob = new Blob([byteArray], { type: mimeType });
+
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${imageId}.${typeMatch[1] || 'jpg'}`;
+                a.click();
+                URL.revokeObjectURL(url);
+            } catch (error) {
+                alert('Download failed: ' + error.message);
+            }
+        }
+    </script>
+</body>
+</html>
