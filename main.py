@@ -1,7 +1,7 @@
 """
 FastAPI application for Menu Vision API.
 
-Implements in-memory image storage with environment variable fallback
+Implements in-memory image storage with a bundled default image fallback
 for deployment on Render (ephemeral storage).
 
 Includes a Keep-Alive Engine to prevent the service from sleeping
@@ -9,6 +9,7 @@ on Render Free Tier.
 
 Endpoints:
   - GET  /health                    Health check
+    - GET  /upload                    Upload page
   - POST /api/v1/parse-menu         Parse and store an image from base64
   - GET  /uploads/{filename}        Serve a previously uploaded file (legacy)
   - GET  /menu/{image_id}           Render HTML menu page with embedded image
@@ -68,6 +69,10 @@ class ParseMenuRequest(BaseModel):
     """Request body model for POST /api/v1/parse-menu."""
     image_b64: str = Field(..., description="Base64-encoded image string, "
                                           "optionally with data-URL prefix.")
+    use_default: bool = Field(
+        True,
+        description="Store the image under the default ID when enabled.",
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -273,8 +278,9 @@ async def parse_menu(request: Request, payload: ParseMenuRequest):
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc))
 
-    # Generate unique image ID
-    image_id = str(uuid.uuid4())
+    # The default image lives only in memory after an upload. On restart,
+    # retrieve_image() falls back to the bundled image in img.txt.
+    image_id = DEFAULT_IMAGE_ID if payload.use_default else str(uuid.uuid4())
 
     # Store in memory (NOT on disk)
     image_store[image_id] = image_bytes
@@ -322,6 +328,17 @@ async def serve_upload(filename: str):
 
 # Initialise Jinja2 template renderer
 templates = Jinja2Templates(directory="templates")
+
+
+@app.get("/upload")
+@app.get("/upload.html")
+async def upload_page(request: Request):
+    """Render the dedicated image upload page."""
+    return templates.TemplateResponse(
+        request=request,
+        name="upload.html",
+        context={"default_image_id": DEFAULT_IMAGE_ID},
+    )
 
 
 @app.get("/menu/{image_id}")

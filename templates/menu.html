@@ -113,7 +113,7 @@
         </div>
 
         <div class="controls">
-            <button class="btn-upload" onclick="uploadImage()">Upload New Menu Image</button>
+            <button class="btn-upload" onclick="window.location.href='/upload'">Upload New Menu Image</button>
             <button class="btn-download" onclick="downloadImage()">Download Image</button>
         </div>
 
@@ -123,39 +123,6 @@
     </div>
 
     <script>
-        async function uploadImage() {
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.accept = 'image/*';
-            input.onchange = async (e) => {
-                const file = e.target.files[0];
-                if (!file) return alert('Please select an image file');
-
-                const reader = new FileReader();
-                reader.onload = function(ev) {
-                    fetch('/api/v1/parse-menu', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ image_b64: ev.target.result })
-                    })
-                    .then(r => r.json())
-                    .then(data => {
-                        if (data.status === 'success') {
-                            window.location.href = `/menu/${data.image_id}`;
-                        } else {
-                            alert('Upload failed: ' + JSON.stringify(data));
-                        }
-                    })
-                    .catch(error => {
-                        alert('Error uploading image: ' + error.message);
-                    });
-                };
-                reader.onerror = () => alert('Error reading file');
-                reader.readAsDataURL(file);
-            };
-            input.click();
-        }
-
         async function downloadImage() {
             const imageId = window.location.pathname.split('/').pop();
             try {
