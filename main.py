@@ -53,11 +53,10 @@ MAX_IMAGE_BYTES = 5 * 1024 * 1024
 # is re-initialised empty.
 image_store: dict[str, bytes] = {}
 
-# Name of the environment variable that may hold a base64-encoded image
-# as a fallback when no image has been uploaded yet.
-ENV_FALLBACK_VAR = "IMAGE_BASE64"
+# Bundled default image. The file contains an <img> element with a data URI.
+DEFAULT_IMAGE_FILE = Path(__file__).with_name("img.txt")
 
-# The default image_id used when serving the IMAGE_BASE64 fallback.
+# The default image_id used when serving the bundled fallback image.
 DEFAULT_IMAGE_ID = "default"
 
 
@@ -102,6 +101,17 @@ def decode_base64_image(raw: str) -> bytes:
     return base64.b64decode(raw)
 
 
+def load_default_image() -> bytes:
+    """Load the bundled default image from img.txt."""
+    raw = DEFAULT_IMAGE_FILE.read_text(encoding="utf-8").strip()
+    if "base64," in raw:
+        raw = raw.split("base64,", 1)[1].split('"', 1)[0]
+    return decode_base64_image(raw)
+
+
+DEFAULT_IMAGE_BYTES = load_default_image()
+
+
 def validate_image(image_bytes: bytes) -> str:
     """
     Validate that *image_bytes* represents a permitted image format
@@ -140,7 +150,7 @@ def retrieve_image(image_id: str) -> Optional[bytes]:
 
     Search order:
       1. In-memory store  (``image_store``)
-      2. Environment variable ``IMAGE_BASE64`` (only when image_id == DEFAULT_IMAGE_ID)
+            2. Bundled default image (only when image_id == DEFAULT_IMAGE_ID)
 
     Returns ``bytes`` on success or ``None`` on failure.
     """
@@ -148,14 +158,9 @@ def retrieve_image(image_id: str) -> Optional[bytes]:
     if image_id in image_store:
         return image_store[image_id]
 
-    # 2 - Environment-variable fallback (only for the default ID)
+    # 2 - Bundled fallback (only for the default ID)
     if image_id == DEFAULT_IMAGE_ID:
-        env_image = os.environ.get(ENV_FALLBACK_VAR)
-        if env_image:
-            try:
-                return decode_base64_image(env_image)
-            except Exception:
-                return None
+        return DEFAULT_IMAGE_BYTES
 
     return None
 
@@ -233,8 +238,6 @@ async def health_check() -> dict:
         "status": "healthy",
         "message": "Menu Vision API is running",
         "store_size": len(image_store),
-        "env_fallback_set": bool(os.environ.get(ENV_FALLBACK_VAR)),
-        "render": os.environ.get("RENDER", "not-set"),
     }
 
 
@@ -326,8 +329,8 @@ async def view_menu(request: Request, image_id: str):
     """
     Render the ``Bar Sinabril`` menu page for *image_id*.
 
-    The image is retrieved from the in-memory store (or the
-    ``IMAGE_BASE64`` environment variable as a fallback) and embedded
+    The image is retrieved from the in-memory store (or the bundled
+    default image as a fallback) and embedded
     directly into the HTML as a base64 data-URI.
     """
     image_bytes = retrieve_image(image_id)
