@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Cervecería Sin Abril, bar de tapas en el centro de Valdemoro.">
+    <title>Cervecería Sin Abril | Valdemoro</title>
+    <style>
+        :root { color-scheme: dark; --charcoal: #121212; --white: #fff; --gold: #fdb813; --red: #dc2626; --muted: #b7b7b7; --panel: #1d1d1d; }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            padding: 20px;
+            background: var(--charcoal);
+            color: var(--white);
+            font-family: Georgia, "Times New Roman", serif;
+        }
+        .page {
+            width: min(100%, 700px);
+            padding: clamp(30px, 7vw, 64px);
+            text-align: center;
+            background: var(--panel);
+            border: 1px solid #383838;
+            border-top: 4px solid var(--red);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, .35);
+        }
+        .logo { width: min(270px, 72vw); height: auto; margin: 0 auto 30px; display: block; }
+        .eyebrow { margin: 0 0 12px; color: var(--gold); font: 700 .75rem/1.2 Arial, sans-serif; letter-spacing: .16em; text-transform: uppercase; }
+        h1 { margin: 0; font-size: clamp(2rem, 7vw, 3.8rem); line-height: 1; }
+        .description { max-width: 560px; margin: 24px auto 28px; color: var(--muted); font-size: clamp(1.05rem, 2.5vw, 1.25rem); line-height: 1.65; }
+        .details { margin: 0 auto 28px; color: var(--white); font: .95rem/1.7 Arial, sans-serif; }
+        .details a { color: var(--white); text-decoration: none; }
+        .details a:hover, .details a:focus-visible { color: var(--gold); }
+        .actions { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+        .button { display: inline-block; padding: 13px 24px; border: 0; border-radius: 2px; background: var(--gold); color: var(--charcoal); font: 700 .9rem Arial, sans-serif; text-decoration: none; }
+        .button:hover, .button:focus-visible { background: var(--red); color: var(--white); }
+        .button.secondary { background: transparent; color: var(--gold); border: 1px solid var(--gold); }
+        .button.secondary:hover, .button.secondary:focus-visible { background: var(--gold); color: var(--charcoal); }
+        a:focus-visible { outline: 3px solid var(--white); outline-offset: 3px; }
+        .footer { margin-top: 34px; color: #777; font: .72rem Arial, sans-serif; letter-spacing: .08em; text-transform: uppercase; }
+        @media (max-width: 520px) { body { padding: 0; } .page { min-height: 100vh; display: grid; align-content: center; border-left: 0; border-right: 0; } .actions, .button { width: 100%; } }
+    </style>
+</head>
+<body>
+    <main class="page">
+        <img class="logo" src="data:image/jpeg;base64,{{ logo_base64 }}" alt="Logo Cervecería Sin Abril">
+        <p class="eyebrow">Bar de tapas · Valdemoro</p>
+        <h1>Cervecería Sin Abril</h1>
+        <p class="description">Tapas recién hechas, jamones, quesos y tomates de huerta. Productos de calidad, buen trato y sabor en el centro de Valdemoro.</p>
+        <div class="details">
+            <p><a href="https://www.google.com/maps/search/?api=1&query=Pje.+de+Col%C3%B3n%2C+7%2C+28341+Valdemoro%2C+Madrid" target="_blank" rel="noopener">Pje. de Colón, 7 · 28341 Valdemoro, Madrid</a></p>
+            <p><a href="tel:+34910942256">910 94 22 56</a></p>
+        </div>
+        <nav class="actions" aria-label="Enlaces principales">
+            <a class="button" href="/menu/default">Ver la carta</a>
+            <a class="button secondary" href="https://www.google.com/maps/search/?api=1&query=Pje.+de+Col%C3%B3n%2C+7%2C+28341+Valdemoro%2C+Madrid" target="_blank" rel="noopener">Cómo llegar</a>
+        </nav>
+        <p class="footer">Centro de Valdemoro</p>
+    </main>
+</body>
+</html>

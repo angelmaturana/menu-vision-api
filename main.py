@@ -340,6 +340,16 @@ async def serve_upload(filename: str):
 templates = Jinja2Templates(directory="templates")
 
 
+@app.get("/")
+async def home_page(request: Request):
+    """Render the public landing page for the bar."""
+    return templates.TemplateResponse(
+        request=request,
+        name="index.html",
+        context={"logo_base64": LOGO_BASE64},
+    )
+
+
 @app.get("/upload")
 @app.get("/upload.html")
 async def upload_page(request: Request):
