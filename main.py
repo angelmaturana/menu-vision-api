@@ -56,6 +56,7 @@ image_store: dict[str, bytes] = {}
 
 # Bundled default image. The file contains an <img> element with a data URI.
 DEFAULT_IMAGE_FILE = Path(__file__).with_name("img.txt")
+LOGO_FILE = Path(__file__).with_name("logo.txt")
 
 # The default image_id used when serving the bundled fallback image.
 DEFAULT_IMAGE_ID = "default"
@@ -114,7 +115,16 @@ def load_default_image() -> bytes:
     return decode_base64_image(raw)
 
 
+def load_logo_base64() -> str:
+    """Load the bundled logo as a base64 string for template embedding."""
+    raw = LOGO_FILE.read_text(encoding="utf-8").strip()
+    if "base64," in raw:
+        raw = raw.split("base64,", 1)[1].split('"', 1)[0]
+    return raw
+
+
 DEFAULT_IMAGE_BYTES = load_default_image()
+LOGO_BASE64 = load_logo_base64()
 
 
 def validate_image(image_bytes: bytes) -> str:
@@ -337,7 +347,10 @@ async def upload_page(request: Request):
     return templates.TemplateResponse(
         request=request,
         name="upload.html",
-        context={"default_image_id": DEFAULT_IMAGE_ID},
+        context={
+            "default_image_id": DEFAULT_IMAGE_ID,
+            "logo_base64": LOGO_BASE64,
+        },
     )
 
 
@@ -382,6 +395,7 @@ async def view_menu(request: Request, image_id: str):
             "image_format": img_format,
             "title": "Bar Sinabril",
             "image_title": "Carta del Bar",
+            "logo_base64": LOGO_BASE64,
         },
     )
 
