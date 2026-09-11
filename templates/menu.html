@@ -25,7 +25,7 @@
             overflow: hidden;
         }
         .brand { display: flex; align-items: center; gap: 18px; padding: 24px 28px 18px; border-bottom: 1px solid #383838; }
-        .logo { width: 74px; height: 74px; object-fit: contain; border-radius: 50%; background: var(--white); }
+        .logo { width: 142px; height: auto; max-width: 34vw; display: block; }
         h1 { font-size: clamp(1.8rem, 5vw, 3rem); line-height: 1; letter-spacing: .02em; }
         .eyebrow { margin-top: 8px; color: var(--gold); font: 700 .75rem/1.2 Arial, sans-serif; letter-spacing: .16em; text-transform: uppercase; }
         .intro { padding: 18px 28px; color: var(--muted); font-size: 1rem; }
@@ -65,7 +65,7 @@
         @media (max-width: 600px) {
             body { padding: 0; }
             .brand { padding: 20px 18px 16px; }
-            .logo { width: 60px; height: 60px; }
+            .logo { width: 108px; max-width: 38vw; }
             .intro, .controls, .info { padding-left: 18px; padding-right: 18px; }
             .image-wrapper { padding: 8px; }
             button { width: 100%; }
