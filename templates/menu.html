@@ -3,7 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cervecería Sin Abril | Carta</title>
+        <meta name="description" content="Carta digital de Cervecería Sin Abril, bar de tapas en Pje. de Colón, 7, Valdemoro. Consulta nuestra propuesta de productos y tapas.">
+        <meta name="robots" content="index, follow">
+        <link rel="canonical" href="{{ canonical_url }}">
+        <meta property="og:title" content="Carta | Cervecería Sin Abril en Valdemoro">
+        <meta property="og:description" content="Consulta la carta digital de Cervecería Sin Abril, bar de tapas en Valdemoro.">
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="{{ canonical_url }}">
+        <meta property="og:locale" content="es_ES">
+        <title>Carta de tapas en Valdemoro | Cervecería Sin Abril</title>
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            "@id": "{{ canonical_url }}#webpage",
+            "url": "{{ canonical_url }}",
+            "name": "Carta de Cervecería Sin Abril",
+            "description": "Carta digital de Cervecería Sin Abril, bar de tapas en Valdemoro.",
+            "inLanguage": "es",
+            "isPartOf": { "@id": "{{ request.base_url }}#bar" },
+            "about": {
+                "@type": "BarOrPub",
+                "name": "Cervecería Sin Abril",
+                "telephone": "+34910942256",
+                "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "Pje. de Colón, 7",
+                    "addressLocality": "Valdemoro",
+                    "postalCode": "28341",
+                    "addressRegion": "Madrid",
+                    "addressCountry": "ES"
+                }
+            }
+        }
+        </script>
     <style>
         :root { color-scheme: dark; --charcoal: #121212; --white: #fff; --gold: #fdb813; --red: #dc2626; --muted: #b7b7b7; --panel: #1d1d1d; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -73,7 +106,7 @@
     </style>
 </head>
 <body>
-    <div class="container">
+    <main class="container">
         <header class="brand">
             <img class="logo" src="data:image/jpeg;base64,{{ logo_base64 }}" alt="Logo Cervecería Sin Abril">
             <div>
@@ -81,7 +114,7 @@
                 <p class="eyebrow">Valdemoro · Carta oficial</p>
             </div>
         </header>
-        <p class="intro">Bienvenido. Consulta nuestra carta y descubre tus próximos favoritos.</p>
+        <p class="intro">Carta digital de nuestro bar de tapas en Valdemoro. Consulta nuestra propuesta y descubre tus próximos favoritos.</p>
 
         <div class="image-wrapper">
             <img class="embedded-image" alt="Menu Card"
@@ -92,10 +125,12 @@
             <button class="btn-download" type="button" onclick="downloadImage()">Descargar carta</button>
         </div>
 
-        <div class="info">
+        <footer class="info">
             <p>{{ image_title | default('Carta de la cervecería') }}</p>
-        </div>
-    </div>
+            <p><strong>Cervecería Sin Abril</strong> · Pje. de Colón, 7 · <a href="tel:+34910942256">910 94 22 56</a></p>
+            <p><a href="/">Volver a la información del bar en Valdemoro</a></p>
+        </footer>
+    </main>
 
     <script>
         async function downloadImage() {

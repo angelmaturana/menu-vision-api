@@ -346,7 +346,11 @@ async def home_page(request: Request):
     return templates.TemplateResponse(
         request=request,
         name="index.html",
-        context={"logo_base64": LOGO_BASE64},
+        context={
+            "logo_base64": LOGO_BASE64,
+            "canonical_url": build_url(request, "/"),
+            "menu_url": build_url(request, "/menu/default"),
+        },
     )
 
 
@@ -406,6 +410,7 @@ async def view_menu(request: Request, image_id: str):
             "title": "Bar Sinabril",
             "image_title": "Carta del Bar",
             "logo_base64": LOGO_BASE64,
+            "canonical_url": build_url(request, f"/menu/{image_id}"),
         },
     )
 
