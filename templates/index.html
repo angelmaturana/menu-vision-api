@@ -119,9 +119,11 @@
         a:focus-visible { outline: 3px solid var(--white); outline-offset: 3px; }
         .footer { margin-top: 34px; color: #777; font: .72rem Arial, sans-serif; letter-spacing: .08em; text-transform: uppercase; }
         @media (max-width: 520px) { body { padding: 0; } .page { min-height: 100vh; display: grid; align-content: center; border-left: 0; border-right: 0; } .actions, .button { width: 100%; } }
+        .watermark { position: fixed; z-index: 9999; top: 50%; left: 50%; width: 170vw; padding: 18px 0; transform: translate(-50%, -50%) rotate(-25deg); background: rgba(220, 38, 38, .2); color: rgba(255, 255, 255, .86); font: 900 clamp(3rem, 12vw, 9rem)/1 Arial, sans-serif; letter-spacing: .16em; text-align: center; text-transform: uppercase; pointer-events: none; user-select: none; white-space: nowrap; border-top: 4px solid rgba(220, 38, 38, .65); border-bottom: 4px solid rgba(220, 38, 38, .65); }
     </style>
 </head>
 <body>
+    <div class="watermark" aria-hidden="true">Provisional</div>
     <main class="page">
         <header>
             <img class="logo" src="data:image/jpeg;base64,{{ logo_base64 }}" alt="Logo de Cervecería Sin Abril, bar de tapas en Valdemoro">
