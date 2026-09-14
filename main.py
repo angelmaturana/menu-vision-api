@@ -57,6 +57,7 @@ image_store: dict[str, bytes] = {}
 # Bundled default image. The file contains an <img> element with a data URI.
 DEFAULT_IMAGE_FILE = Path(__file__).with_name("img.txt")
 LOGO_FILE = Path(__file__).with_name("logo.txt")
+PDF_MENU_FILE = Path(__file__).with_name("SinAbril_Carta.pdf")
 
 # The default image_id used when serving the bundled fallback image.
 DEFAULT_IMAGE_ID = "default"
@@ -349,7 +350,7 @@ async def home_page(request: Request):
         context={
             "logo_base64": LOGO_BASE64,
             "canonical_url": build_url(request, "/"),
-            "menu_url": build_url(request, "/menu/default"),
+            "menu_url": build_url(request, "/carta"),
         },
     )
 
@@ -365,6 +366,35 @@ async def upload_page(request: Request):
             "default_image_id": DEFAULT_IMAGE_ID,
             "logo_base64": LOGO_BASE64,
         },
+    )
+
+
+@app.get("/carta")
+async def carta_page(request: Request):
+    """Render a polished, responsive digital menu with quick PDF download."""
+    return templates.TemplateResponse(
+        request=request,
+        name="carta.html",
+        context={
+            "title": "Carta | Cervecería Sin Abril",
+            "logo_base64": LOGO_BASE64,
+            "canonical_url": build_url(request, "/carta"),
+            "pdf_url": build_url(request, "/carta/pdf"),
+        },
+    )
+
+
+@app.get("/carta/pdf")
+@app.get("/SinAbril_Carta.pdf")
+async def carta_pdf():
+    """Serve the printable PDF menu for download."""
+    if not PDF_MENU_FILE.exists():
+        raise HTTPException(status_code=404, detail="Carta PDF no encontrada")
+
+    return FileResponse(
+        path=PDF_MENU_FILE,
+        filename="SinAbril_Carta.pdf",
+        media_type="application/pdf",
     )
 
 

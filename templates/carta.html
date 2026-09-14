@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Carta digital premium de Cervecería Sin Abril en Valdemoro.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="{{ canonical_url }}">
+    <title>{{ title }}</title>
+    <style>
+        :root {
+            --bg: #120f0d;
+            --bg-strong: #0c0b09;
+            --panel: rgba(27, 24, 21, 0.96);
+            --panel-soft: rgba(36, 31, 27, 0.92);
+            --panel-alt: rgba(22, 18, 14, 0.96);
+            --line: rgba(240, 214, 170, 0.14);
+            --gold: #d7af5f;
+            --gold-soft: #f2d38b;
+            --gold-deep: #b9892a;
+            --wine: #7a261d;
+            --text: #f7f3ee;
+            --muted: #d4c7b5;
+            --muted-soft: #b9a98e;
+            --shadow: rgba(0, 0, 0, 0.38);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: Arial, Helvetica, sans-serif;
+            color: var(--text);
+            background:
+                radial-gradient(circle at top, rgba(215, 175, 95, 0.15), transparent 22%),
+                linear-gradient(180deg, #17130f 0%, var(--bg) 100%);
+        }
+
+        a { color: inherit; text-decoration: none; }
+
+        .page {
+            max-width: 1180px;
+            margin: 0 auto;
+            padding: 22px 18px 48px;
+        }
+
+        .topbar {
+            position: sticky;
+            top: 12px;
+            z-index: 10;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 18px;
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            background: rgba(21, 18, 15, 0.78);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 18px 35px rgba(0,0,0,0.25);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            min-width: 0;
+        }
+
+        .brand img {
+            width: 78px;
+            height: 78px;
+            object-fit: contain;
+            border-radius: 16px;
+            padding: 6px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .brand h1 {
+            font-size: clamp(1.1rem, 2vw, 1.75rem);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            line-height: 1.15;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        .brand p {
+            color: var(--gold-soft);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            font-size: 0.68rem;
+            margin-top: 4px;
+        }
+
+        .top-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 18px;
+            border-radius: 999px;
+            border: 1px solid transparent;
+            font-weight: 700;
+            font-size: 0.85rem;
+            letter-spacing: 0.02em;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+        }
+
+        .btn:hover, .btn:focus-visible {
+            transform: translateY(-1px);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-soft) 100%);
+            color: #1a1208;
+            box-shadow: 0 12px 24px rgba(215, 175, 95, 0.25);
+        }
+
+        .btn-secondary {
+            border-color: rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.02);
+            color: var(--text);
+        }
+
+        .hero {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 18px;
+            margin-top: 22px;
+            padding: 26px 22px;
+            border: 1px solid var(--line);
+            border-radius: 22px;
+            background: linear-gradient(135deg, rgba(215,175,95,0.08), rgba(122,38,29,0.05) 55%, rgba(255,255,255,0.01));
+            box-shadow: 0 18px 36px rgba(0,0,0,0.2);
+        }
+
+        .hero-copy {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-width: 0;
+        }
+
+        .eyebrow {
+            color: var(--gold-soft);
+            font-size: 0.7rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .hero h2 {
+            font-size: clamp(2.2rem, 5vw, 4.2rem);
+            line-height: 0.96;
+            letter-spacing: -0.05em;
+            font-weight: 900;
+            margin-bottom: 12px;
+        }
+
+        .hero p {
+            color: var(--muted);
+            font-size: 1rem;
+            line-height: 1.75;
+            max-width: 62ch;
+        }
+
+        .hero-details {
+            display: grid;
+            gap: 10px;
+            padding: 18px;
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            background: rgba(255,255,255,0.02);
+        }
+
+        .detail {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 12px 10px;
+            border-bottom: 1px solid var(--line);
+            color: var(--muted);
+            font-size: 0.92rem;
+        }
+
+        .detail:last-child { border-bottom: 0; }
+
+        .detail strong {
+            color: var(--text);
+            font-weight: 700;
+        }
+
+        .menu-layout {
+            display: grid;
+            grid-template-columns: 240px minmax(0, 1fr);
+            gap: 24px;
+            margin-top: 28px;
+            align-items: start;
+        }
+
+        .sidebar {
+            position: sticky;
+            top: 92px;
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            background: rgba(23, 19, 15, 0.9);
+            padding: 18px 16px;
+            box-shadow: 0 16px 30px rgba(0,0,0,0.18);
+        }
+
+        .sidebar h3 {
+            color: var(--gold-soft);
+            font-size: 0.76rem;
+            font-weight: 800;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .sidebar nav {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 10px 12px;
+            border-radius: 10px;
+            color: var(--muted);
+            border: 1px solid transparent;
+            transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+        }
+
+        .sidebar a:hover, .sidebar a:focus-visible {
+            background: rgba(215,175,95,0.08);
+            border-color: rgba(215,175,95,0.22);
+            color: var(--text);
+        }
+
+        .menu-content {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .section {
+            border: 1px solid var(--line);
+            border-radius: 22px;
+            overflow: hidden;
+            background: rgba(21, 18, 15, 0.9);
+            box-shadow: 0 16px 30px rgba(0,0,0,0.18);
+        }
+
+        .section-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--line);
+            background: linear-gradient(90deg, rgba(215,175,95,0.12), rgba(255,255,255,0.02));
+        }
+
+        .section-header h3 {
+            color: var(--gold-soft);
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            font-size: 0.92rem;
+            font-weight: 800;
+        }
+
+        .items {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px 16px;
+            padding: 18px;
+        }
+
+        .item {
+            background: rgba(255,255,255,0.015);
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            padding: 14px 14px 13px;
+            min-height: 130px;
+        }
+
+        .item.featured {
+            border-color: rgba(215,175,95,0.35);
+            background: linear-gradient(180deg, rgba(215,175,95,0.05), rgba(255,255,255,0.01));
+        }
+
+        .item-head {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .item-name {
+            font-size: 1.05rem;
+            font-weight: 700;
+            line-height: 1.35;
+        }
+
+        .item-price {
+            color: var(--gold-soft);
+            font-weight: 800;
+            font-size: 1.05rem;
+            white-space: nowrap;
+        }
+
+        .item-desc {
+            color: var(--muted);
+            line-height: 1.6;
+            font-size: 0.92rem;
+        }
+
+        .download-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            flex-wrap: wrap;
+            padding: 18px 20px;
+            border: 1px solid rgba(215,175,95,0.28);
+            background: linear-gradient(135deg, rgba(215,175,95,0.09), rgba(255,255,255,0.02));
+            border-radius: 18px;
+        }
+
+        .download-box p {
+            color: var(--muted);
+            line-height: 1.6;
+            max-width: 56ch;
+        }
+
+        .footer {
+            margin-top: 26px;
+            padding-top: 18px;
+            text-align: center;
+            color: var(--muted-soft);
+            border-top: 1px solid var(--line);
+            font-size: 0.9rem;
+        }
+
+        .footer a { color: var(--gold-soft); }
+
+        @media (max-width: 980px) {
+            .hero { grid-template-columns: 1fr; }
+            .menu-layout { grid-template-columns: 1fr; }
+            .sidebar { position: static; }
+        }
+
+        @media (max-width: 640px) {
+            .page { padding: 14px 12px 32px; }
+            .topbar {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 14px 14px 12px;
+            }
+            .top-actions { width: 100%; }
+            .btn { flex: 1 1 auto; }
+            .items { grid-template-columns: 1fr; }
+            .download-box { align-items: stretch; }
+            .download-box .btn { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <header class="topbar" aria-label="Cabecera de la carta">
+            <div class="brand">
+                <img src="data:image/jpeg;base64,{{ logo_base64 }}" alt="Logo Cervecería Sin Abril">
+                <div>
+                    <h1>Cervecería Sin Abril</h1>
+                    <p>Valdemoro · Bar de tapas</p>
+                </div>
+            </div>
+
+            <div class="top-actions">
+                <a class="btn btn-secondary" href="/">Inicio</a>
+                <a class="btn btn-primary" href="{{ pdf_url }}" target="_blank" rel="noopener" download>Descargar PDF</a>
+            </div>
+        </header>
+
+        <section class="hero" aria-labelledby="menu-title">
+            <div class="hero-copy">
+                <div class="eyebrow">Carta digital</div>
+                <h2 id="menu-title">Tapas, vino y buen ambiente.</h2>
+                <p>Una propuesta cercana, sabrosa y auténtica para compartir en cualquier momento del día. Delicias de la casa, platos para compartir y vinos que acompañan cada detalle.</p>
+            </div>
+
+            <div class="hero-details" aria-label="Datos del bar">
+                <div class="detail"><span>Dirección</span><strong>Pje. de Colón, 7</strong></div>
+                <div class="detail"><span>Localidad</span><strong>Valdemoro</strong></div>
+                <div class="detail"><span>Teléfono</span><strong>910 94 22 56</strong></div>
+                <div class="detail"><span>Estilo</span><strong>Bar de tapas</strong></div>
+            </div>
+        </section>
+
+        <div class="menu-layout">
+            <aside class="sidebar" aria-label="Navegación por categorías">
+                <h3>Secciones</h3>
+                <nav>
+                    <a href="#tapas">Tapas</a>
+                    <a href="#platos">Platos</a>
+                    <a href="#bebidas">Bebidas</a>
+                    <a href="#vinos">Vinos</a>
+                    <a href="#postres">Postres</a>
+                </nav>
+            </aside>
+
+            <main class="menu-content">
+                <section class="section" id="tapas">
+                    <div class="section-header"><h3>Tapas</h3></div>
+                    <div class="items">
+                        <article class="item featured">
+                            <div class="item-head">
+                                <div class="item-name">Patatas bravas</div>
+                                <div class="item-price">5,50 €</div>
+                            </div>
+                            <p class="item-desc">Salsa brava casera y alioli de elaboración propia.</p>
+                        </article>
+                        <article class="item">
+                            <div class="item-head">
+                                <div class="item-name">Jamón ibérico</div>
+                                <div class="item-price">8,00 €</div>
+                            </div>
+                            <p class="item-desc">Porción de jamón ibérico con pan artesanal.</p>
+                        </article>
+                        <article class="item">
+                            <div class="item-head">
+                                <div class="item-name">Queso y membrillo</div>
+                                <div class="item-price">7,50 €</div>
+                            </div>
+                            <p class="item-desc">Clásico para compartir y acompañar una buena copa.</p>
+                        </article>
+                        <article class="item">
+                            <div class="item-head">
+                                <div class="item-name">Croquetas caseras</div>
+                                <div class="item-price">6,50 €</div>
+                            </div>
+                            <p class="item-desc">Crujientes, cremosas y con ese sabor de casa.</p>
+                        </article>
+                    </div>
+                </section>
+
+                <section class="section" id="platos">
+                    <div class="section-header"><h3>Platos</h3></div>
+                    <div class="items">
+                        <article class="item featured">
+                            <div class="item-head">
+                                <div class="item-name">Paella de marisco</div>
+                                <div class="item-price">18,50 €</div>
+                            </div>
+                            <p class="item-desc">Arroz con marisco fresco, sabor intenso y cocina tradicional.</p>
+                        </article>
+                        <article class="item">
+                            <div class="item-head">
+                                <div class="item-name">Entrecot</div>
+                                <div class="item-price">22,00 €</div>
+                            </div>
+                            <p class="item-desc">Carne jugosa a la plancha, ideal con papas o ensalada.</p>
+                        </article>
+                        <article class="item">
+                            <div class="item-head">
+                                <div class="item-name">Bacalao al pil-pil</div>
+                                <div class="item-price">16,90 €</div>
+                            </div>
+                            <p class="item-desc">Preparación tradicional con un toque intenso y sabroso.</p>
+                        </article>
+                        <article class="item">
+                            <div class="item-head">
+                                <div class="item-name">Pimientos del piquillo</div>
+                                <div class="item-price">9,90 €</div>
+                            </div>
+                            <p class="item-desc">Acompañados de atún y aceite de la casa.</p>
+                        </article>
+                    </div>
+                </section>
+
+                <section class="section" id="bebidas">
+                    <div class="section-header"><h3>Bebidas</h3></div>
+                    <div class="items">
+                        <article class="item">
+                            <div class="item-head">
+                                <div class="item-name">Caña</div>
+                                <div class="item-price">2,80 €</div>
+                            </div>
+                            <p class="item-desc">Refrescante, bien fría y perfecta para acompañar tapas.</p>
+                        </article>
+                        <article class="item">
+                            <div class="item-head">
+                                <div class="item-name">Coca-Cola / Zero</div>
+                                <div class="item-price">2,90 €</div>
+                            </div>
+                            <p class="item-desc">La opción clásica para cualquier comensal.</p>
+                        </article>
+                        <article class="item">
+                            <div class="item-head">
+                                <div class="item-name">Agua mineral</div>
+                                <div class="item-price">2,20 €</div>
+                            </div>
+                            <p class="item-desc">Con gas o sin gas, siempre bien servida.</p>
+                        </article>
+                        <article class="item">
+                            <div class="item-head">
+                                <div class="item-name">Zumo natural</div>
+                                <div class="item-price">3,50 €</div>
+                            </div>
+                            <p class="item-desc">Una opción fresca y muy apropiada para el día.</p>
+                        </article>
+                    </div>
+                </section>
+
+                <section class="section" id="vinos">
+                    <div class="section-header"><h3>Vinos</h3></div>
+                    <div class="items">
+                        <article class="item featured">
+                            <div class="item-head">
+                                <div class="item-name">Tinto de la casa</div>
+                                <div class="item-price">18,00 €</div>
+                            </div>
+                            <p class="item-desc">Frutal, equilibrado y ideal para acompañar tapas.</p>
+                        </article>
+                        <article class="item">
+                            <div class="item-head">
+                                <div class="item-name">Blanco seco</div>
+                                <div class="item-price">17,50 €</div>
+                            </div>
+                            <p class="item-desc">Ligero, fresco y perfecto para platos de pescado.</p>
+                        </article>
+                        <article class="item">
+                            <div class="item-head">
+                                <div class="item-name">Rosado</div>
+                                <div class="item-price">16,50 €</div>
+                            </div>
+                            <p class="item-desc">Muy apropiado para compartir con amigos.</p>
+                        </article>
+                        <article class="item">
+                            <div class="item-head">
+                                <div class="item-name">Cava brut</div>
+                                <div class="item-price">24,00 €</div>
+                            </div>
+                            <p class="item-desc">Para celebraciones y momentos especiales.</p>
+                        </article>
+                    </div>
+                </section>
+
+                <section class="section" id="postres">
+                    <div class="section-header"><h3>Postres</h3></div>
+                    <div class="items">
+                        <article class="item">
+                            <div class="item-head">
+                                <div class="item-name">Flan casero</div>
+                                <div class="item-price">4,80 €</div>
+                            </div>
+                            <p class="item-desc">Un clásico que siempre aporta ese toque dulce final.</p>
+                        </article>
+                        <article class="item">
+                            <div class="item-head">
+                                <div class="item-name">Tarta de queso</div>
+                                <div class="item-price">5,20 €</div>
+                            </div>
+                            <p class="item-desc">Cremosa, suave y con un dulzor perfecto.</p>
+                        </article>
+                        <article class="item featured">
+                            <div class="item-head">
+                                <div class="item-name">Chuletón de postre</div>
+                                <div class="item-price">6,90 €</div>
+                            </div>
+                            <p class="item-desc">Recomendación de la casa para cerrar con estilo.</p>
+                        </article>
+                        <article class="item">
+                            <div class="item-head">
+                                <div class="item-name">Café</div>
+                                <div class="item-price">2,10 €</div>
+                            </div>
+                            <p class="item-desc">Ideal para acompañar el final de la comida.</p>
+                        </article>
+                    </div>
+                </section>
+
+                <div class="download-box" aria-label="Descargar la carta en PDF">
+                    <p>Si prefieres la versión imprimible, descarga la carta oficial en PDF.</p>
+                    <a class="btn btn-primary" href="{{ pdf_url }}" target="_blank" rel="noopener" download>Descargar PDF</a>
+                </div>
+            </main>
+        </div>
+
+        <footer class="footer">
+            <p><strong>Cervecería Sin Abril</strong> · Pje. de Colón, 7 · Valdemoro · <a href="tel:+34910942256">910 94 22 56</a></p>
+        </footer>
+    </div>
+</body>
+</html>
