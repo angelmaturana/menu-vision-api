@@ -65,11 +65,9 @@
         .status.error { color: #ff7777; }
         .back { display: inline-block; margin-top: 20px; color: var(--gold); font-family: Arial, sans-serif; }
         @media (max-width: 600px) { body { padding: 0; } .panel { min-height: 100vh; border-left: 0; border-right: 0; } }
-        .watermark { position: fixed; z-index: 9999; top: 50%; left: 50%; width: 170vw; padding: 18px 0; transform: translate(-50%, -50%) rotate(-25deg); background: rgba(220, 38, 38, .2); color: rgba(255, 255, 255, .86); font: 900 clamp(3rem, 12vw, 9rem)/1 Arial, sans-serif; letter-spacing: .16em; text-align: center; text-transform: uppercase; pointer-events: none; user-select: none; white-space: nowrap; border-top: 4px solid rgba(220, 38, 38, .65); border-bottom: 4px solid rgba(220, 38, 38, .65); }
     </style>
 </head>
 <body>
-    <div class="watermark" aria-hidden="true">Provisional</div>
     <main class="panel">
         <header class="brand">
             <img class="logo" src="data:image/jpeg;base64,{{ logo_base64 }}" alt="Logo Cervecería Sin Abril">
