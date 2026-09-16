@@ -1,0 +1,104 @@
+{
+  "restaurante": {
+    "nombre": "SinAbril Cervecería",
+    "eslogan": "Buena comida, mejores momentos",
+    "direccion": "Paseo Colón 2, Local 7 · Valdemoro",
+    "instagram": "@sanabril03"
+  },
+  "leyenda_alergenos": {
+    "Gl": "Gluten",
+    "Hv": "Huevo",
+    "Le": "Leche",
+    "Pz": "Pescado",
+    "Mo": "Moluscos",
+    "SO2": "Sulfitos",
+    "So": "Soja",
+    "Ap": "Apio",
+    "Ms": "Mostaza"
+  },
+  "secciones": {
+    "raciones_y_tapas": [
+      { "nombre": "Pollo SinAbril", "precio": 8.00, "alergenos": "Gluten", "trazas": ["Huevo", "Soja", "Leche", "Sulfitos", "Apio", "Mostaza"] },
+      { "nombre": "Patatas Bravas 3 Salsas", "precio": 8.00, "alergenos": ["Huevo", "Leche"] },
+      { "nombre": "Ceviche La Mariposa", "precio": 8.00, "alergenos": ["Huevo"] },
+      { "nombre": "Tabla de Embutidos", "precio": 12.00, "detalle": "Queso, Salchichón, Mixta", "alergenos": ["Leche", "Sulfitos"] },
+      { "nombre": "Calamares (rebozados)", "precio": 12.00, "alergenos": ["Gluten", "Huevo", "Moluscos"] },
+      { "nombre": "Chopitos (rebozados)", "precio": 12.00, "alergenos": ["Gluten", "Huevo", "Moluscos"] },
+      { "nombre": "Cazón (en adobo)", "precio": 10.00, "alergenos": ["Pescado", "Gluten", "Sulfitos"] },
+      { "nombre": "Tortilla Personal", "precio": 8.00, "alergenos": ["Huevo"] },
+      { "nombre": "Patacón de la Casa", "precio": 8.00, "alergenos": "Sin alérgenos obligatorios identificados" },
+      { "nombre": "Pitufos Variados", "precio": 4.00, "alergenos": null }
+    ],
+    "bebidas_y_refrescos": [
+      { "nombre": "Agua", "precio": 1.10 },
+      { "nombre": "Coca-Cola / Fanta / Tónica", "precio": 2.50 },
+      { "nombre": "Aquarius / Pony Malta", "precio": 2.80 },
+      { "nombre": "Red Bull", "precio": 3.00 }
+    ],
+    "cervezas": {
+      "alergeno_general": "Gluten",
+      "de_grifo": [
+        { "nombre": "Caña (250 ml)", "precio": 1.50 },
+        { "nombre": "Doble", "precio": 2.50 },
+        { "nombre": "Jarra (1 L)", "precio": 3.50 },
+        { "nombre": "Cañón", "precio": 4.00 }
+      ],
+      "botellines_y_tercios": [
+        { "nombre": "Victoria Botellín", "precio": 1.80 },
+        { "nombre": "Victoria Tercio", "precio": 2.50 },
+        { "nombre": "Mahou Botellín Verde", "precio": 2.00 },
+        { "nombre": "Mahou Botellín Roja", "precio": 2.00 },
+        { "nombre": "Mahou Tercio Verde", "precio": 3.00 },
+        { "nombre": "Mahou Tercio Roja", "precio": 3.20 }
+      ]
+    },
+    "vinos_tinto_sangria": {
+      "alergeno_general": "Sulfitos",
+      "tintos_y_blancos": [
+        { "nombre": "Vino Joven", "precio": 2.50 },
+        { "nombre": "Vino Roble", "precio": 2.80 },
+        { "nombre": "Vino Rueda (Blanco)", "precio": 2.50 },
+        { "nombre": "Vino Crianza", "precio": 3.00 }
+      ],
+      "tinto_de_verano_y_sangria": [
+        { "nombre": "Tinto de Verano Copa", "precio": 2.50 },
+        { "nombre": "Tinto de Verano Jarra", "precio": 7.50 },
+        { "nombre": "Sangría Copa", "precio": 3.00 },
+        { "nombre": "Sangría Jarra", "precio": 8.00 }
+      ]
+    },
+    "cafes_e_infusiones": [
+      { "nombre": "Café Solo / Con Leche / Cortado / Americano / Italiano / Manchado", "precio": 1.80 },
+      { "nombre": "Descafeinado (Máquina)", "precio": 1.80 },
+      { "nombre": "Descafeinado (Sobre)", "precio": 1.60 },
+      { "nombre": "Infusiones", "precio": 1.80 },
+      { "nombre": "Vaso de Leche", "precio": 1.50 },
+      { "nombre": "Bombón / ColaCao", "precio": 2.00 },
+      { "nombre": "Carajillo", "precio": 2.80 }
+    ],
+    "desayunos_salados": {
+      "nota": "Incluyen café o infusión",
+      "items": [
+        { "nombre": "Tostada con aceite", "precio": 3.50 },
+        { "nombre": "Tostada con tomate natural rallado", "precio": 4.00 },
+        { "nombre": "Tostada con jamón York y queso", "precio": 4.00 },
+        { "nombre": "Plato de huevos con beicon o chorizo", "precio": 5.00 },
+        { "nombre": "Tostada con jamón ibérico y tomate", "precio": 5.50 },
+        { "nombre": "Tostada con aguacate, queso crema y sésamo", "precio": 5.50 },
+        { "nombre": "Tostada con atún y tomate en rodajas", "precio": 5.50 },
+        { "nombre": "Tostada con salmón, queso crema y rúcula", "precio": 6.50 }
+      ]
+    },
+    "desayunos_dulces": {
+      "nota": "Incluyen café o infusión",
+      "items": [
+        { "nombre": "Croissant con mermelada y mantequilla", "precio": 3.50 },
+        { "nombre": "Churros y porras", "precio": 3.50 },
+        { "nombre": "Tostadas de chocolate y frutos rojos", "precio": 4.00 },
+        { "nombre": "Tostadas de crema de maní y mermelada", "precio": 4.50 },
+        { "nombre": "Tostadas de queso crema, frutos secos y miel", "precio": 4.50 },
+        { "nombre": "Tostadas de arequipe y banano", "precio": 5.00 }
+      ]
+    }
+  }
+}

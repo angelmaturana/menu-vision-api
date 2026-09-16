@@ -50,6 +50,15 @@
         .item-name { font-size:1rem; font-weight:700; }
         .item-price { flex:0 0 auto; color:var(--yellow); font-weight:800; white-space:nowrap; }
         .item-desc { margin:7px 0 0; color:var(--muted); font-size:.88rem; line-height:1.5; }
+        .item-meta { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
+        .allergen, .traces { display:inline-block; padding:3px 7px; border:1px solid #5b4d18; border-radius:3px; color:#f4d65c; font-size:.72rem; line-height:1.3; }
+        .traces { color:#d2d2d2; border-color:#555; }
+        .note { margin:0; color:var(--yellow); font-size:.82rem; font-weight:700; }
+        .section-note { padding:12px 16px 0; }
+        .allergen-legend { margin-top:22px; padding:18px; border:1px solid var(--line); background:var(--panel-2); }
+        .allergen-legend h2 { margin:0 0 10px; font-size:1.35rem; }
+        .legend-list { display:flex; flex-wrap:wrap; gap:7px 14px; margin:0; padding:0; list-style:none; color:var(--muted); font-size:.82rem; }
+        .legend-list strong { color:var(--yellow); }
         .bottom-actions { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:22px; padding:18px; border-left:4px solid var(--yellow); background:var(--panel-2); }
         .bottom-actions p { margin:0; color:var(--muted); font-size:.9rem; }
         footer { margin-top:28px; padding-top:18px; color:#aaa; border-top:1px solid var(--line); text-align:center; font-size:.82rem; }
@@ -58,19 +67,42 @@
     </style>
 </head>
 <body>
+    {% macro item_card(item, general_allergen=None, featured=False) %}
+        <article class="item{% if featured %} featured{% endif %}">
+            <div class="item-head"><strong class="item-name">{{ item.nombre }}</strong><strong class="item-price">{{ "%.2f"|format(item.precio)|replace('.', ',') }} €</strong></div>
+            {% if item.detalle is defined %}<p class="item-desc">{{ item.detalle }}</p>{% endif %}
+            {% if item.alergenos is defined and item.alergenos %}
+                <div class="item-meta" aria-label="Alérgenos">
+                    {% if item.alergenos is string %}<span class="allergen">{{ item.alergenos }}</span>{% else %}{% for allergen in item.alergenos %}<span class="allergen">{{ allergen }}</span>{% endfor %}{% endif %}
+                </div>
+            {% elif general_allergen %}<div class="item-meta"><span class="allergen">{{ general_allergen }}</span></div>
+            {% else %}<p class="item-desc">Consulta al equipo sobre alérgenos.</p>{% endif %}
+            {% if item.trazas is defined %}<div class="item-meta"><span class="traces">Trazas: {{ item.trazas|join(', ') }}</span></div>{% endif %}
+        </article>
+    {% endmacro %}
+
+    {% macro item_section(section_id, title, label, items, note=None, general_allergen=None) %}
+        <section class="menu-section" id="{{ section_id }}"><header class="section-head"><h2>{{ title }}</h2><span>{{ label }}</span></header>{% if note %}<div class="section-note"><p class="note">{{ note }}</p></div>{% endif %}<div class="items">{% for item in items %}{{ item_card(item, general_allergen, loop.first) }}{% endfor %}</div></section>
+    {% endmacro %}
+
     <div class="shell">
         <header class="topbar" aria-label="Cabecera de la carta">
             <a class="brand" href="/" aria-label="Ir al inicio de SinAbril Cervecería"><img class="logo" src="data:image/jpeg;base64,{{ logo_base64 }}" alt="Logo de SinAbril Cervecería"><span><strong class="brand-name">SinAbril</strong><span class="brand-place">Cervecería · Valdemoro</span></span></a>
             <div class="top-actions"><a class="button button-secondary" href="/">Inicio</a><a class="button button-primary" href="{{ pdf_url }}" target="_blank" rel="noopener" download>PDF</a></div>
         </header>
         <main>
-            <section class="intro" aria-labelledby="menu-title"><div><p class="kicker">Carta digital · consulta rápida</p><h1 id="menu-title">Elige tu momento.</h1><p>Tapas, platos para compartir, bebidas y algo dulce. Pregunta al equipo por disponibilidad, alérgenos y opciones del día.</p></div></section>
-            <nav class="quick-links" aria-label="Categorías de la carta"><a href="#tapas">Tapas</a><a href="#platos">Platos</a><a href="#bebidas">Bebidas</a><a href="#vinos">Vinos</a><a href="#postres">Postres</a></nav>
-            <section class="menu-section" id="tapas"><header class="section-head"><h2>Tapas</h2><span>Para compartir</span></header><div class="items"><article class="item featured"><div class="item-head"><strong class="item-name">Patatas bravas</strong><strong class="item-price">5,50 €</strong></div><p class="item-desc">Salsa brava casera y alioli de elaboración propia.</p></article><article class="item"><div class="item-head"><strong class="item-name">Jamón ibérico</strong><strong class="item-price">8,00 €</strong></div><p class="item-desc">Porción de jamón ibérico con pan artesanal.</p></article><article class="item"><div class="item-head"><strong class="item-name">Queso y membrillo</strong><strong class="item-price">7,50 €</strong></div><p class="item-desc">Clásico para compartir y acompañar una buena copa.</p></article><article class="item"><div class="item-head"><strong class="item-name">Croquetas caseras</strong><strong class="item-price">6,50 €</strong></div><p class="item-desc">Crujientes, cremosas y con sabor de casa.</p></article></div></section>
-            <section class="menu-section" id="platos"><header class="section-head"><h2>Platos</h2><span>Cocina</span></header><div class="items"><article class="item featured"><div class="item-head"><strong class="item-name">Paella de marisco</strong><strong class="item-price">18,50 €</strong></div><p class="item-desc">Arroz con marisco fresco y cocina tradicional.</p></article><article class="item"><div class="item-head"><strong class="item-name">Entrecot</strong><strong class="item-price">22,00 €</strong></div><p class="item-desc">Carne jugosa a la plancha, con patatas o ensalada.</p></article><article class="item"><div class="item-head"><strong class="item-name">Bacalao al pil-pil</strong><strong class="item-price">16,90 €</strong></div><p class="item-desc">Preparación tradicional de sabor intenso.</p></article><article class="item"><div class="item-head"><strong class="item-name">Pimientos del piquillo</strong><strong class="item-price">9,90 €</strong></div><p class="item-desc">Acompañados de atún y aceite de la casa.</p></article></div></section>
-            <section class="menu-section" id="bebidas"><header class="section-head"><h2>Bebidas</h2><span>Bien frías</span></header><div class="items"><article class="item"><div class="item-head"><strong class="item-name">Caña</strong><strong class="item-price">2,80 €</strong></div><p class="item-desc">Refrescante y perfecta para acompañar tapas.</p></article><article class="item"><div class="item-head"><strong class="item-name">Coca-Cola / Zero</strong><strong class="item-price">2,90 €</strong></div><p class="item-desc">La opción clásica para cualquier comensal.</p></article><article class="item"><div class="item-head"><strong class="item-name">Agua mineral</strong><strong class="item-price">2,20 €</strong></div><p class="item-desc">Con gas o sin gas.</p></article><article class="item"><div class="item-head"><strong class="item-name">Zumo natural</strong><strong class="item-price">3,50 €</strong></div><p class="item-desc">Una opción fresca para cualquier momento.</p></article></div></section>
-            <section class="menu-section" id="vinos"><header class="section-head"><h2>Vinos</h2><span>Una copa más</span></header><div class="items"><article class="item featured"><div class="item-head"><strong class="item-name">Tinto de la casa</strong><strong class="item-price">18,00 €</strong></div><p class="item-desc">Frutal, equilibrado e ideal para acompañar tapas.</p></article><article class="item"><div class="item-head"><strong class="item-name">Blanco seco</strong><strong class="item-price">17,50 €</strong></div><p class="item-desc">Ligero, fresco y perfecto con pescado.</p></article><article class="item"><div class="item-head"><strong class="item-name">Rosado</strong><strong class="item-price">16,50 €</strong></div><p class="item-desc">Muy apropiado para compartir.</p></article><article class="item"><div class="item-head"><strong class="item-name">Cava brut</strong><strong class="item-price">24,00 €</strong></div><p class="item-desc">Para celebrar los momentos especiales.</p></article></div></section>
-            <section class="menu-section" id="postres"><header class="section-head"><h2>Postres</h2><span>Final dulce</span></header><div class="items"><article class="item"><div class="item-head"><strong class="item-name">Flan casero</strong><strong class="item-price">4,80 €</strong></div><p class="item-desc">Un clásico para cerrar la comida.</p></article><article class="item"><div class="item-head"><strong class="item-name">Tarta de queso</strong><strong class="item-price">5,20 €</strong></div><p class="item-desc">Cremosa, suave y con el dulzor justo.</p></article><article class="item featured"><div class="item-head"><strong class="item-name">Chuletón de postre</strong><strong class="item-price">6,90 €</strong></div><p class="item-desc">Recomendación de la casa.</p></article><article class="item"><div class="item-head"><strong class="item-name">Café</strong><strong class="item-price">2,10 €</strong></div><p class="item-desc">El acompañamiento perfecto.</p></article></div></section>
+            <section class="intro" aria-labelledby="menu-title"><div><p class="kicker">Carta digital · consulta rápida</p><h1 id="menu-title">{{ menu_data.restaurante.eslogan }}.</h1><p>Tapas, raciones, bebidas, cervezas, vinos, cafés y desayunos. Pregunta al equipo por disponibilidad y alérgenos.</p></div></section>
+            <nav class="quick-links" aria-label="Categorías de la carta"><a href="#tapas">Tapas</a><a href="#bebidas">Bebidas</a><a href="#cervezas">Cervezas</a><a href="#vinos">Vinos</a><a href="#cafes">Cafés</a><a href="#desayunos-salados">Desayunos</a><a href="#alergenos">Alérgenos</a></nav>
+            {{ item_section('tapas', 'Raciones y tapas', 'Para compartir', menu_data.secciones.raciones_y_tapas) }}
+            {{ item_section('bebidas', 'Bebidas y refrescos', 'Sin alcohol', menu_data.secciones.bebidas_y_refrescos) }}
+            {{ item_section('cervezas', 'Cervezas de grifo', 'Cervezas', menu_data.secciones.cervezas.de_grifo, general_allergen=menu_data.secciones.cervezas.alergeno_general) }}
+            {{ item_section('cervezas-botellines', 'Botellines y tercios', 'Cervezas', menu_data.secciones.cervezas.botellines_y_tercios, general_allergen=menu_data.secciones.cervezas.alergeno_general) }}
+            {{ item_section('vinos', 'Vinos tintos y blancos', 'Vinos', menu_data.secciones.vinos_tinto_sangria.tintos_y_blancos, general_allergen=menu_data.secciones.vinos_tinto_sangria.alergeno_general) }}
+            {{ item_section('sangria', 'Tinto de verano y sangría', 'Para refrescar', menu_data.secciones.vinos_tinto_sangria.tinto_de_verano_y_sangria, general_allergen=menu_data.secciones.vinos_tinto_sangria.alergeno_general) }}
+            {{ item_section('cafes', 'Cafés e infusiones', 'Después', menu_data.secciones.cafes_e_infusiones) }}
+            {{ item_section('desayunos-salados', 'Desayunos salados', 'Incluyen café o infusión', menu_data.secciones.desayunos_salados['items'], menu_data.secciones.desayunos_salados.nota) }}
+            {{ item_section('desayunos-dulces', 'Desayunos dulces', 'Incluyen café o infusión', menu_data.secciones.desayunos_dulces['items'], menu_data.secciones.desayunos_dulces.nota) }}
+            <section class="allergen-legend" id="alergenos" aria-labelledby="allergen-title"><h2 id="allergen-title">Leyenda de alérgenos</h2><ul class="legend-list">{% for code, name in menu_data.leyenda_alergenos.items() %}<li><strong>{{ code }}</strong> {{ name }}</li>{% endfor %}</ul></section>
             <aside class="bottom-actions"><p>¿Prefieres guardarla o compartirla? Descarga la carta oficial en PDF.</p><a class="button button-primary" href="{{ pdf_url }}" target="_blank" rel="noopener" download>Descargar PDF</a></aside>
         </main>
         <footer><strong>SinAbril Cervecería</strong> · Paseo Colón 2, local 7 · Valdemoro · <a href="tel:+34910942256">910 94 22 56</a></footer>

@@ -17,6 +17,7 @@ Endpoints:
 """
 
 import io
+import json
 import os
 import sys
 import time
@@ -58,6 +59,7 @@ image_store: dict[str, bytes] = {}
 DEFAULT_IMAGE_FILE = Path(__file__).with_name("img.txt")
 LOGO_FILE = Path(__file__).with_name("logo.txt")
 PDF_MENU_FILE = Path(__file__).with_name("SinAbril_Carta.pdf")
+MENU_DATA_FILE = Path(__file__).with_name("carta.json")
 
 # The default image_id used when serving the bundled fallback image.
 DEFAULT_IMAGE_ID = "default"
@@ -124,8 +126,14 @@ def load_logo_base64() -> str:
     return raw
 
 
+def load_menu_data() -> dict:
+    """Load the public menu content from the bundled JSON source."""
+    return json.loads(MENU_DATA_FILE.read_text(encoding="utf-8"))
+
+
 DEFAULT_IMAGE_BYTES = load_default_image()
 LOGO_BASE64 = load_logo_base64()
+MENU_DATA = load_menu_data()
 
 
 def validate_image(image_bytes: bytes) -> str:
@@ -379,6 +387,7 @@ async def carta_page(request: Request):
             "logo_base64": LOGO_BASE64,
             "canonical_url": build_url(request, "/carta"),
             "pdf_url": build_url(request, "/carta/pdf"),
+            "menu_data": MENU_DATA,
         },
     )
 
