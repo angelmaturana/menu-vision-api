@@ -60,6 +60,7 @@ DEFAULT_IMAGE_FILE = Path(__file__).with_name("img.txt")
 LOGO_FILE = Path(__file__).with_name("logo.txt")
 PDF_MENU_FILE = Path(__file__).with_name("SinAbril_Carta.pdf")
 MENU_DATA_FILE = Path(__file__).with_name("carta.json")
+FAVICON_FILE = Path(__file__).with_name("favicon.png")
 
 # The default image_id used when serving the bundled fallback image.
 DEFAULT_IMAGE_ID = "default"
@@ -404,6 +405,12 @@ async def carta_pdf():
         filename="SinAbril_Carta.pdf",
         media_type="application/pdf",
     )
+
+
+@app.get("/favicon.png")
+async def favicon():
+    """Serve the SinAbril logo crop used by both public pages."""
+    return FileResponse(path=FAVICON_FILE, media_type="image/png")
 
 
 @app.get("/menu/{image_id}")
