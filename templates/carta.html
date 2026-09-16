@@ -64,9 +64,13 @@
         .legend-list strong { color:var(--yellow); }
         .bottom-actions { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:22px; padding:18px; border-left:4px solid var(--yellow); background:var(--panel-2); }
         .bottom-actions p { margin:0; color:var(--muted); font-size:.9rem; }
-        footer { margin-top:28px; padding-top:18px; color:#aaa; border-top:1px solid var(--line); text-align:center; font-size:.82rem; }
+        footer { margin-top:28px; padding-top:18px; color:#aaa; border-top:1px solid var(--line); font-size:.82rem; }
+        .footer-content { display:flex; align-items:center; justify-content:space-between; gap:24px; }
+        .footer-business,.footer-promo { margin:0; }
+        .footer-promo { color:#c7c7c7; text-align:right; }
         footer a { color:var(--yellow); }
-        @media (max-width:620px) { .shell { padding:0 12px 24px; } .top-actions .button-secondary { display:none; } .intro { display:block; padding-top:25px; } .items { grid-template-columns:1fr; } .item { min-height:0; padding:15px; } .bottom-actions { align-items:stretch; flex-direction:column; } .bottom-actions .button { width:100%; } }
+        .footer-promo a { font-weight:700; }
+        @media (max-width:620px) { .shell { padding:0 12px 24px; } .top-actions .button-secondary { display:none; } .intro { display:block; padding-top:25px; } .items { grid-template-columns:1fr; } .item { min-height:0; padding:15px; } .bottom-actions { align-items:stretch; flex-direction:column; } .bottom-actions .button { width:100%; } .footer-content { align-items:flex-start; flex-direction:column; gap:12px; } .footer-promo { text-align:left; } }
     </style>
 </head>
 <body>
@@ -108,7 +112,7 @@
             <section class="allergen-legend" id="alergenos" aria-labelledby="allergen-title"><h2 id="allergen-title">Leyenda de alérgenos</h2><ul class="legend-list">{% for code, name in menu_data.leyenda_alergenos.items() %}<li><strong>{{ code }}</strong> {{ name }}</li>{% endfor %}</ul></section>
             <aside class="bottom-actions"><p>¿Prefieres guardarla o compartirla? Descarga la carta oficial en PDF.</p><a class="button button-primary" href="{{ pdf_url }}" target="_blank" rel="noopener" download>Descargar PDF</a></aside>
         </main>
-        <footer><strong>SinAbril Cervecería</strong> · Paseo Colón 2, local 7 · Valdemoro · <a href="tel:+34910942256">910 94 22 56</a></footer>
+        <footer><div class="footer-content"><p class="footer-business"><strong>SinAbril Cervecería</strong> · Paseo Colón 2, local 7 · Valdemoro · <a href="tel:+34910942256">910 94 22 56</a></p><p class="footer-promo">¿Quieres una web como esta por 100 € al año? <a href="https://seovaldemoro.onrender.com/" target="_blank" rel="noopener">SEO Valdemoro</a></p></div></footer>
     </div>
     <script>
         (() => {

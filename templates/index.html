@@ -114,7 +114,11 @@
         .faq summary { cursor:pointer; font-weight:700; }
         .faq p { margin:8px 0 0; color:var(--muted); }
         footer { margin-top:42px; padding:22px 0 8px; color:#a9a9a9; border-top:1px solid var(--line); font-size:.86rem; }
+        .footer-content { display:flex; align-items:center; justify-content:space-between; gap:24px; }
+        .footer-business,.footer-promo { margin:0; }
+        .footer-promo { color:#c7c7c7; text-align:right; }
         footer a { color:var(--yellow); }
+        .footer-promo a { font-weight:700; }
         @media (max-width:700px) {
             .shell { padding:0 14px 24px; }
             .topbar { align-items:flex-start; flex-wrap:wrap; }
@@ -129,6 +133,8 @@
             .hero-facts { margin-top:8px; }
             .grid,.contact { grid-template-columns:1fr; }
             .section-heading { display:block; }
+            .footer-content { align-items:flex-start; flex-direction:column; gap:12px; }
+            .footer-promo { text-align:left; }
         }
     </style>
 </head>
@@ -150,7 +156,7 @@
             <section class="section" id="visitanos" aria-labelledby="visit-title"><div class="contact"><article class="contact-card"><p class="kicker">Estamos en Valdemoro</p><h2 id="visit-title">Paseo Colón 2, local 7</h2><p>28340 Valdemoro, Madrid<br><a href="tel:+34910942256">910 94 22 56</a></p><a class="button button-primary" href="https://share.google/Qbl3ESnaH0VX6w4d8" target="_blank" rel="noopener">Abrir ubicación</a></article><article class="contact-card"><p class="kicker">Sigue el ambiente</p><h2>@sanabril03</h2><p>Consulta novedades y momentos de la cervecería en Instagram.</p><a class="button button-secondary" href="https://www.instagram.com/sanabril03" target="_blank" rel="noopener">Ver Instagram</a></article></div></section>
             <section class="section faq" aria-labelledby="faq-title"><p class="kicker">Información útil</p><h2 id="faq-title">Preguntas frecuentes</h2><details><summary>¿Dónde está SinAbril Cervecería?</summary><p>En Paseo Colón 2, local 7, 28340 Valdemoro, Madrid.</p></details><details><summary>¿Qué puedo encontrar?</summary><p>Tapas, raciones, bebidas, desayunos y un ambiente cómodo para compartir.</p></details><details><summary>¿Dónde consulto la carta?</summary><p>En nuestra <a href="{{ menu_url }}">carta digital</a>.</p></details></section>
         </main>
-        <footer><strong>SinAbril Cervecería</strong> · Paseo Colón 2, local 7 · Valdemoro · <a href="tel:+34910942256">910 94 22 56</a></footer>
+        <footer><div class="footer-content"><p class="footer-business"><strong>SinAbril Cervecería</strong> · Paseo Colón 2, local 7 · Valdemoro · <a href="tel:+34910942256">910 94 22 56</a></p><p class="footer-promo">¿Quieres una web como esta por 100 € al año? <a href="https://seovaldemoro.onrender.com/" target="_blank" rel="noopener">SEO Valdemoro</a></p></div></footer>
     </div>
 </body>
 </html>
