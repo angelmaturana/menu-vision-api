@@ -73,8 +73,9 @@
       { "nombre": "Descafeinado (Sobre)", "precio": 1.60 },
       { "nombre": "Infusiones", "precio": 1.80 },
       { "nombre": "Vaso de Leche", "precio": 1.50 },
-      { "nombre": "Bombón / ColaCao", "precio": 2.00 },
-      { "nombre": "Carajillo", "precio": 2.80 }
+      { "nombre": "Café Bombón", "precio": 2.00 },
+      { "nombre": "Carajillo", "precio": 2.80 },
+      { "nombre": "ColaCao", "precio": 2.00 }
     ],
     "desayunos_salados": {
       "nota": "Incluyen café o infusión",
