@@ -45,6 +45,8 @@ uvicorn main:app --reload --host 0.0.0.0 --port 8000
 | URL | Description |
 | --- | --- |
 | `/` | Public landing page |
+| `/robots.txt` | Crawler directives and sitemap location |
+| `/sitemap.xml` | XML sitemap for the public pages |
 | `/upload` | Menu image upload form |
 | `/upload.html` | Alias for the upload form |
 | `/menu/default` | Bundled or default menu image |
@@ -96,6 +98,8 @@ python3 main.py
 ```
 
 When `RENDER_EXTERNAL_URL` is set, a background thread periodically calls `/keepalive`. The interval defaults to 270 seconds and can be changed with `KEEPALIVE_INTERVAL`.
+
+For production SEO, set `PUBLIC_SITE_URL` to the canonical public origin, for example `https://www.example.com`. This value is used by canonical tags, `robots.txt`, the sitemap, and generated public URLs. If it is not set, the app uses the request host.
 
 ## Project structure
 

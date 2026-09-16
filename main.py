@@ -25,6 +25,7 @@ import uuid
 import base64
 import threading
 import urllib.request
+import xml.etree.ElementTree as ET
 from pathlib import Path
 from typing import Optional
 
@@ -190,15 +191,30 @@ def retrieve_image(image_id: str) -> Optional[bytes]:
     return None
 
 
+def public_base_url(request: Request) -> str:
+    """Return the public origin used for canonical and SEO URLs."""
+    configured_url = os.environ.get("PUBLIC_SITE_URL", "").strip().rstrip("/")
+    if configured_url:
+        return configured_url
+
+    scheme = "https" if request.headers.get("x-forwarded-proto", "http") == "https" else "http"
+    host = request.headers.get("host", "localhost:8000")
+    return f"{scheme}://{host}"
+
+
 def build_url(request: Request, path: str) -> str:
     """
     Build a fully-qualified URL from the request context.
 
     Detects the correct scheme (http/https) and host header.
     """
-    scheme = "https" if request.headers.get("x-forwarded-proto", "http") == "https" else "http"
-    host = request.headers.get("host", "localhost:8000")
-    return f"{scheme}://{host}{path}"
+    return f"{public_base_url(request)}{path}"
+
+
+def file_last_modified(*files: Path) -> str:
+    """Return the latest source modification date in sitemap format."""
+    latest_timestamp = max(file.stat().st_mtime for file in files)
+    return time.strftime("%Y-%m-%d", time.gmtime(latest_timestamp))
 
 
 # ---------------------------------------------------------------------------
@@ -264,6 +280,49 @@ async def health_check() -> dict:
         "message": "Menu Vision API is running",
         "store_size": len(image_store),
     }
+
+
+@app.get("/robots.txt", response_class=PlainTextResponse)
+async def robots_txt(request: Request):
+    """Publish crawler directives and the public sitemap location."""
+    sitemap_url = build_url(request, "/sitemap.xml")
+    content = "\n".join(
+        [
+            "User-agent: *",
+            "Allow: /",
+            "Disallow: /api/",
+            "Disallow: /docs",
+            "Disallow: /redoc",
+            "Disallow: /openapi.json",
+            "Disallow: /health",
+            "Disallow: /keepalive",
+            "Disallow: /upload",
+            "Disallow: /upload.html",
+            "Disallow: /menu/",
+            f"Sitemap: {sitemap_url}",
+            "",
+        ]
+    )
+    return PlainTextResponse(content, media_type="text/plain")
+
+
+@app.get("/sitemap.xml")
+async def sitemap_xml(request: Request):
+    """Return the small, canonical sitemap for the public website."""
+    namespace = "http://www.sitemaps.org/schemas/sitemap/0.9"
+    ET.register_namespace("", namespace)
+    root = ET.Element(f"{{{namespace}}}urlset")
+    sitemap_entries = (
+        ("/", Path("templates/index.html")),
+        ("/carta", Path("templates/carta.html"), MENU_DATA_FILE),
+    )
+    for path, *source_files in sitemap_entries:
+        url = ET.SubElement(root, f"{{{namespace}}}url")
+        ET.SubElement(url, f"{{{namespace}}}loc").text = build_url(request, path)
+        ET.SubElement(url, f"{{{namespace}}}lastmod").text = file_last_modified(*source_files)
+
+    xml = ET.tostring(root, encoding="utf-8", xml_declaration=True)
+    return PlainTextResponse(xml, media_type="application/xml")
 
 
 @app.post("/api/v1/parse-menu")
@@ -360,6 +419,7 @@ async def home_page(request: Request):
             "logo_base64": LOGO_BASE64,
             "canonical_url": build_url(request, "/"),
             "menu_url": build_url(request, "/carta"),
+            "site_url": public_base_url(request),
         },
     )
 
@@ -388,6 +448,7 @@ async def carta_page(request: Request):
             "logo_base64": LOGO_BASE64,
             "canonical_url": build_url(request, "/carta"),
             "pdf_url": build_url(request, "/carta/pdf"),
+            "site_url": public_base_url(request),
             "menu_data": MENU_DATA,
         },
     )

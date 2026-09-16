@@ -12,6 +12,7 @@
     <meta name="ICBM" content="40.1908, -3.6784">
     <link rel="icon" type="image/png" sizes="512x512" href="/favicon.png">
     <link rel="canonical" href="{{ canonical_url }}">
+    <link rel="alternate" hreflang="es-ES" href="{{ canonical_url }}">
     <meta property="og:locale" content="es_ES">
     <meta property="og:type" content="restaurant">
     <meta property="og:site_name" content="SinAbril Cervecería">
@@ -19,30 +20,50 @@
     <meta property="og:description" content="Tapas, raciones, desayunos, cerveza fría y terraza en Paseo Colón, Valdemoro.">
     <meta property="og:url" content="{{ canonical_url }}">
     <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="SinAbril Cervecería | Bar de tapas en Valdemoro">
+    <meta name="twitter:description" content="Tapas, raciones, desayunos, cerveza fría y terraza en Paseo Colón, Valdemoro.">
     <title>SinAbril Cervecería | Tapas y desayunos en Valdemoro</title>
     <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "BarOrPub",
-      "@id": "{{ canonical_url }}#sinabril",
-      "name": "SinAbril Cervecería",
-      "url": "{{ canonical_url }}",
-      "telephone": "+34910942256",
-      "priceRange": "€€",
-      "servesCuisine": ["Tapas", "Cocina española", "Desayunos"],
-      "hasMenu": "{{ menu_url }}",
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "Paseo Colón 2, local 7",
-        "addressLocality": "Valdemoro",
-        "addressRegion": "Madrid",
-        "postalCode": "28340",
-        "addressCountry": "ES"
-      },
-      "geo": { "@type": "GeoCoordinates", "latitude": 40.1908, "longitude": -3.6784 },
-      "areaServed": { "@type": "City", "name": "Valdemoro" },
-      "sameAs": ["https://share.google/Qbl3ESnaH0VX6w4d8", "https://www.instagram.com/sanabril03"]
-    }
+        {
+            "@context": "https://schema.org",
+            "@graph": [
+                {
+                    "@type": "BarOrPub",
+                    "@id": "{{ canonical_url }}#sinabril",
+                    "name": "SinAbril Cervecería",
+                    "url": "{{ canonical_url }}",
+                    "mainEntityOfPage": { "@id": "{{ canonical_url }}#webpage" },
+                    "telephone": "+34910942256",
+                    "priceRange": "€€",
+                    "servesCuisine": ["Tapas", "Cocina española", "Desayunos"],
+                      "hasMenu": { "@id": "{{ menu_url }}#menu" },
+                    "hasMap": "https://share.google/Qbl3ESnaH0VX6w4d8",
+                    "address": {
+                        "@type": "PostalAddress",
+                        "streetAddress": "Paseo Colón 2, local 7",
+                        "addressLocality": "Valdemoro",
+                        "addressRegion": "Madrid",
+                        "postalCode": "28340",
+                        "addressCountry": "ES"
+                    },
+                    "geo": { "@type": "GeoCoordinates", "latitude": 40.1908, "longitude": -3.6784 },
+                    "areaServed": [
+                        { "@type": "City", "name": "Valdemoro" },
+                        { "@type": "AdministrativeArea", "name": "Comunidad de Madrid" }
+                    ],
+                    "sameAs": ["https://www.instagram.com/sanabril03"]
+                },
+                {
+                    "@type": "WebPage",
+                    "@id": "{{ canonical_url }}#webpage",
+                    "url": "{{ canonical_url }}",
+                    "name": "SinAbril Cervecería | Tapas y desayunos en Valdemoro",
+                    "description": "Tapas, raciones, desayunos, cerveza fría y terraza en Paseo Colón, Valdemoro.",
+                    "inLanguage": "es-ES",
+                    "about": { "@id": "{{ canonical_url }}#sinabril" }
+                }
+            ]
+        }
     </script>
     <style>
         :root { --black:#111; --panel:#1b1b1b; --panel-2:#242424; --yellow:#ffc400; --red:#d71920; --white:#fff; --muted:#d0d0d0; --line:#3b3b3b; }
