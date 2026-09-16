@@ -376,7 +376,6 @@ async def carta_page(request: Request):
         request=request,
         name="carta.html",
         context={
-            "title": "Carta | Cervecería Sin Abril",
             "logo_base64": LOGO_BASE64,
             "canonical_url": build_url(request, "/carta"),
             "pdf_url": build_url(request, "/carta/pdf"),
